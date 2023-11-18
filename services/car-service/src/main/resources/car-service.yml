@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Car Service v1
+  description: |-
+    API for Car Service
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: Car
+    description: List owners cars
+paths:
+  /api/v1/list-car-request:
+    post:
+      tags:
+        - Car
+      description: List a new car request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiListCarRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiListCarRequestResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  schemas:
+    ApiListCarRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        ownerId:
+          type: integer
+        model:
+          type: string
+          example: 'Hyundai'
+        location:
+          type: string
+          example: 'Leuven'
+        price:
+          type: number
+          format: int64
+          example: 100
+
+    ApiListCarRequestResponse:
+      type: object
+      properties:
+        listCarRequestNumber:
+          type: string
+          example: "23-11-5678"
+
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '2300'
+        message:
+          type: string
+          description: 'Brief explanation about the error, for more information consult the Car Service team'
+    CarListedEvent:
+      type: object
+      properties:
+        listCarRequestNumber:
+          type: string
+          example: "23-11-5678"
+        ownerEmail:
+          type: string
+    CarListingFailedEvent:
+      type: object
+      properties:
+        listCarRequestNumber:
+          type: string
+          example: "23-11-5678"
+        error:
+          type: string
