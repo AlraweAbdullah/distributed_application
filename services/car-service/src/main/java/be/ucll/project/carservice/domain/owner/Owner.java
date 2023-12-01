@@ -7,7 +7,6 @@ import javax.persistence.Id;
 @Entity
 public class Owner {
     @Id
-    @GeneratedValue
     private Long id;
     private String email;
 

@@ -1,4 +1,4 @@
-package be.ucll.project.carservice;
+package be.ucll.project.platformservice;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Reservation Service v1
+  description: |-
+    API for Reservation Service
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: Reservation
+    description: days when a user reserves a car
+paths:
+  /api/v1/reservation-request:
+    post:
+      tags:
+        - Reservation
+      description: Register a Reservation for a car
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiReservationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservationRequestResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/reservation-confirmation:
+    post:
+      tags:
+        - Reservation
+      description: Accept or Decline a previously requested reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApireservationConfirmation'
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiReservationRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+        carId:
+          type: integer
+        startDate:
+          type: string
+          format: date
+          example: '2023-09-25'
+        endDate:
+          type: string
+          format: date
+          example: '2023-09-21'
+    ApiReservationRequestResponse:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "23-11-5678"
+    ApireservationConfirmation:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "23-11-5678"
+        acceptProposedReservation:
+          type: boolean
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '2300'
+        message:
+          type: string
+          description: 'Brief explanation about the error, for more information consult the Reservation Service team'
+    ReservationCreatedEvent:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "23-11-5678"
+        startOfReservation:
+          type: string
+          format: date
+        endOfReservation:
+          type: string
+          format: date
+        userEmail:
+          type: string
+        userId:
+          type: integer
+        carId:
+          type: integer
+        OwnerId:
+          type: integer
+
+    ReservationCreationFailedEvent:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "23-11-5678"
+        error:
+          type: string

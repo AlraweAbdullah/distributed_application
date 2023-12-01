@@ -37,6 +37,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
@@ -137,8 +142,8 @@
                             <generateModelDocumentation>false</generateModelDocumentation>
                             <generateModelTests>false</generateModelTests>
                             <skipValidateSpec>true</skipValidateSpec>
-                            <generateSupportingFiles>true</generateSupportingFiles>
-                            <apiPackage>be.ucll.project.carservice.client.owner.api</apiPackage>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <generateApis>false</generateApis>
                             <modelPackage>be.ucll.project.carservice.client.owner.api.model</modelPackage>
 
                             <configOptions>

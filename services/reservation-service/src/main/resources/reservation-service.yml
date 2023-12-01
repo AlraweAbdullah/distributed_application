@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Reservation Service v1
+  description: |-
+    API for Reservation Service
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: Reservation
+    description: Days when a user reserves a car
+paths:
+  /api/v1/reservation-request:
+    post:
+      tags:
+        - Reservation
+      description: Register a Reservation for a car
+      operationId: requestReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiReservationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReservationRequestResponse'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/v1/reservation-confirmation:
+    post:
+      tags:
+        - Reservation
+      description: Accept or Decline a previously requested reservation
+      operationId: finalizeReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiReservationConfirmation'
+      responses:
+        '200':
+          description: Successful operation
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    ApiReservationRequest:
+      type: object
+      properties:
+        userEmail:
+          type: string
+        carId:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+          format: date
+          example: '2023-09-25'
+        endDate:
+          type: string
+          format: date
+          example: '2023-09-21'
+    ApiReservationRequestResponse:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "1"
+    ApiReservationConfirmation:
+      type: object
+      properties:
+        reservationRequestNumber:
+          type: string
+          example: "1"
+        acceptProposedReservation:
+          type: boolean
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'Functional code specifying the error'
+          example: '2300'
+        message:
+          type: string
+          description: 'Brief explanation about the error'

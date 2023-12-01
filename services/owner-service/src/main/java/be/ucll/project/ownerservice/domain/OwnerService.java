@@ -20,16 +20,16 @@ public class OwnerService {
     }
 
     public Owner createOwner(ApiOwner data) {
-        if(data.getEmail() == null || data.getEmail().trim() == ""){
-            throw new ServiceException("add","email can't  be empty.");
+        if(data.getEmail() == null || data.getEmail().trim().isEmpty()){
+            throw new OwnerException("add","email can't  be empty.");
         }
 
-        if(data.getName() == null || data.getName().trim() == ""){
-            throw new ServiceException("add","name can't be empty.");
+        if(data.getName() == null || data.getName().trim().isEmpty()){
+            throw new OwnerException("add","name can't be empty.");
         }
 
         if(repository.findByEmail(data.getEmail()) != null){
-            throw new ServiceException("add","you already have an account with email " + data.getEmail() + ".");
+            throw new OwnerException("add","you already have an account with email " + data.getEmail() + ".");
         }
 
         Owner owner = repository.save(new Owner(

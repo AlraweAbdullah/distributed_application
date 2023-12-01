@@ -22,8 +22,7 @@ public class OwnerController implements OwnerApiDelegate {
     @Override
     public ResponseEntity<ApiOwners> getOwners() {
         ApiOwners owners = new ApiOwners();
-        owners.addAll(
-                ownerService.getOwners().stream()
+        owners.setOwners(ownerService.getOwners().stream()
                         .map(this::toDto)
                         .toList()
         );

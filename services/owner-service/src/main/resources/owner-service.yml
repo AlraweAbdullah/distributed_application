@@ -10,13 +10,13 @@ externalDocs:
   url: http://swagger.io
 tags:
   - name: Owner
-    description: owner who lists a car
+    description: People registered in the system as owners
 paths:
   /api/v1/owner:
     post:
       tags:
         - Owner
-      summary: Add an Owner to the system
+      summary: Create a new Owner
       description: Create a new Owner
       operationId: createOwner
       requestBody:
@@ -58,9 +58,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiError'
 
-
 components:
   schemas:
+    ApiOwners:
+      type: object
+      properties:
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiOwner'
     ApiOwner:
       type: object
       properties:
@@ -73,16 +79,12 @@ components:
           example: 'Abdullah'
         email:
           type: string
-          example: 'abdullah@example.com'
+          example: 'example@example.com'
     OwnerCreatedEvent:
       type: object
       properties:
         owner:
           $ref: '#/components/schemas/ApiOwner'
-    ApiOwners:
-      type: array
-      items:
-        $ref: '#/components/schemas/ApiOwner'
     ApiError:
       type: object
       properties:
@@ -92,4 +94,4 @@ components:
           example: '2300'
         message:
           type: string
-          description: 'Brief explanation about the error, for more information consult the Car Service team'
+          description: 'Brief explanation about the error'

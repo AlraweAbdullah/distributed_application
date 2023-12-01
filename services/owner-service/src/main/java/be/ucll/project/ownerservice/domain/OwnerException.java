@@ -1,7 +1,7 @@
 package be.ucll.project.ownerservice.domain;
 
 
-public class ServiceException extends RuntimeException{
+public class OwnerException extends RuntimeException{
 
     private final String action;
 
@@ -10,7 +10,7 @@ public class ServiceException extends RuntimeException{
     }
 
 
-    public ServiceException(String action, String message) {
+    public OwnerException(String action, String message) {
         super(message);
         this.action = action;
     }

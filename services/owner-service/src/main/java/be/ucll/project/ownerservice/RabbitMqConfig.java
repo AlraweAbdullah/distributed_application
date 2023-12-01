@@ -11,17 +11,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
-    private final static Logger LOGGER = LoggerFactory.getLogger(RabbitMqConfig.class);
-
-     @Bean
-      public Queue createOwnerCreatedQueue() {
-          return new Queue("q.owner-created");
-      }
 
     @Bean
     public Jackson2JsonMessageConverter converter() {
         return new Jackson2JsonMessageConverter();
     }
+
 
     @Bean
     public RabbitTemplate rabbitTemplate(Jackson2JsonMessageConverter converter, CachingConnectionFactory cachingConnectionFactory) {

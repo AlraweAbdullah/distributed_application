@@ -1,56 +1,85 @@
 openapi: 3.0.3
 info:
-  title: Owner Service v1
+  title: Car Service v1
   description: |-
-    API for Owner Service
+    API for Car Service
   termsOfService: http://swagger.io/terms/
   version: 1.0.11
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 tags:
-  - name: Owner
-    description: owner who lists a car
+  - name: Car
+    description: List owners cars
 paths:
-  /api/v1/owner:
+  /api/v1/car:
     post:
       tags:
-        - Owner
-      summary: Add an Owner to the system
-      description: Create a new Owner
-      operationId: createOwner
+        - Car
+      summary: Add a car to the system
+      description: Create a new Car
+      operationId: createCar
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiOwner'
+              $ref: '#/components/schemas/ApiCar'
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiOwner'
+                $ref: '#/components/schemas/ApiCar'
         '500':
           description: Internal Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-    get:
+
+    delete:
       tags:
-        - Owner
-      summary: Get all Owners from the system
-      description: Get all Owners from the system
-      operationId: getOwners
+        - Car
+      summary: Remove a car from the system
+      description: Remove a Car
+      operationId: removeCar
+      parameters:
+        - name: id
+          in: query
+          description: ID of the car to be removed
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiOwners'
+                $ref: '#/components/schemas/ApiCar'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+    get:
+      tags:
+        - Car
+      summary: Get all Cars from the system
+      description: Get all Cars from the system
+      operationId: getCars
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCars'
         '500':
           description: Internal Error
           content:
@@ -61,28 +90,27 @@ paths:
 
 components:
   schemas:
-    ApiOwner:
+    ApiCar:
       type: object
       properties:
-        id:
+        ownerId:
           type: integer
           format: int64
-          example: 10
-        name:
+        model:
           type: string
-          example: 'Abdullah'
-        email:
+          example: 'Hyundai'
+        location:
           type: string
-          example: 'abdullah@example.com'
-    OwnerCreatedEvent:
-      type: object
-      properties:
-        owner:
-          $ref: '#/components/schemas/ApiOwner'
-    ApiOwners:
+          example: 'Leuven'
+        price:
+          type: integer
+          example: 100
+
+    ApiCars:
       type: array
       items:
-        $ref: '#/components/schemas/ApiOwner'
+        $ref: '#/components/schemas/ApiCar'
+
     ApiError:
       type: object
       properties:
