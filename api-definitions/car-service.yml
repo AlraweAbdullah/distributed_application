@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
   title: Car Service v1
-  description: |-
+  description: |
     API for Car Service
   termsOfService: http://swagger.io/terms/
-  version: 1.0.11
+  version: 1.0.12
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
@@ -12,24 +12,143 @@ tags:
   - name: Car
     description: List owners cars
 paths:
-  /api/v1/list-car-request:
+  /api/v1/car:
     post:
       tags:
         - Car
-      description: List a new car request
+      summary: Add a car to the system
+      description: Create a new Car
+      operationId: createCar
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiListCarRequest'
+              $ref: '#/components/schemas/ApiCar'
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiListCarRequestResponse'
+                $ref: '#/components/schemas/ApiCar'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+    get:
+      tags:
+        - Car
+      summary: Get all Cars from the system
+      description: Get all Cars from the system
+      operationId: getCars
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCars'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+  /api/v1/car/search:
+    get:
+      tags:
+        - Car
+      summary: Search Cars based on criteria
+      description: Search for cars based on specified criteria
+      operationId: searchCars
+      parameters:
+        - name: model
+          in: query
+          description: Model of the car
+          required: true
+          schema:
+            type: string
+            example: 'BMW'
+        - name: location
+          in: query
+          description: Location of the car
+          required: true
+          schema:
+            type: string
+            example: 'Leuven'
+        - name: minPrice
+          in: query
+          description: Minimum price of the car
+          required: true
+          schema:
+            type: integer
+            example: 300
+        - name: maxPrice
+          in: query
+          description: Maximum price of the car
+          required: true
+          schema:
+            type: integer
+            example: 450
+        - name: startDate
+          in: query
+          description: Start date for the search
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2023-12-2'
+        - name: endDate
+          in: query
+          description: End date for the search
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2023-12-12'
+
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCars'
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+
+  /api/v1/car/{carId}:
+    delete:
+      tags:
+        - Car
+      summary: Remove a car from the system
+      description: Remove a car based on its ID
+      operationId: removeCar
+      parameters:
+        - name: carId
+          in: path
+          description: ID of the car to be removed
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
         '500':
           description: Internal Error
           content:
@@ -39,15 +158,24 @@ paths:
 
 components:
   schemas:
-    ApiListCarRequest:
+    ApiCars:
+      type: object
+      properties:
+        cars:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiCar'
+    ApiCar:
       type: object
       properties:
         id:
           type: integer
           format: int64
           example: 10
-        ownerId:
+        owner:
           type: integer
+          format: int64
+          example: 1
         model:
           type: string
           example: 'Hyundai'
@@ -55,17 +183,8 @@ components:
           type: string
           example: 'Leuven'
         price:
-          type: number
-          format: int64
+          type: integer
           example: 100
-
-    ApiListCarRequestResponse:
-      type: object
-      properties:
-        listCarRequestNumber:
-          type: string
-          example: "23-11-5678"
-
     ApiError:
       type: object
       properties:
@@ -75,20 +194,49 @@ components:
           example: '2300'
         message:
           type: string
-          description: 'Brief explanation about the error, for more information consult the Car Service team'
-    CarListedEvent:
+          description: 'Brief explanation about the error'
+    CheckCarExistCommand:
       type: object
       properties:
-        listCarRequestNumber:
-          type: string
-          example: "23-11-5678"
+        reservationId:
+          type: integer
+          format: int64
+        carId:
+          type: integer
+          format: int64
+    CarExistedEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+          format: int64
+        carId:
+          type: integer
+          format: int64
+        carPrice:
+          type: integer
         ownerEmail:
           type: string
-    CarListingFailedEvent:
+        isListed:
+          type: boolean
+    CreateReservationCommand:
       type: object
       properties:
-        listCarRequestNumber:
+        reservationId:
+          type: integer
+          format: int64
+        startDate:
           type: string
-          example: "23-11-5678"
-        error:
+          format: date
+        endDate:
           type: string
+          format: date
+        carId:
+          type: integer
+          format: int64
+    DeclineReservationCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+          format: int64

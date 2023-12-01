@@ -1,116 +1,90 @@
 openapi: 3.0.3
 info:
-  title: Car Service v1
+  title: Owner Service v1
   description: |-
-    API for Car Service
+    API for Owner Service
   termsOfService: http://swagger.io/terms/
   version: 1.0.11
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 tags:
-  - name: Car
-    description: List owners cars
+  - name: Owner
+    description: People registered in the system as owners
 paths:
-  /api/v1/car:
+  /api/v1/owner:
     post:
       tags:
-        - Car
-      summary: Add a car to the system
-      description: Create a new Car
-      operationId: createCar
+        - Owner
+      summary: Create a new Owner
+      description: Create a new Owner
+      operationId: createOwner
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiCar'
+              $ref: '#/components/schemas/ApiOwner'
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiCar'
+                $ref: '#/components/schemas/ApiOwner'
         '500':
           description: Internal Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-
-    delete:
-      tags:
-        - Car
-      summary: Remove a car from the system
-      description: Remove a Car
-      operationId: removeCar
-      parameters:
-        - name: id
-          in: query
-          description: ID of the car to be removed
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiCar'
-        '500':
-          description: Internal Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiError'
-
     get:
       tags:
-        - Car
-      summary: Get all Cars from the system
-      description: Get all Cars from the system
-      operationId: getCars
+        - Owner
+      summary: Get all Owners from the system
+      description: Get all Owners from the system
+      operationId: getOwners
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiCars'
+                $ref: '#/components/schemas/ApiOwners'
         '500':
           description: Internal Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
-
 
 components:
   schemas:
-    ApiCar:
+    ApiOwners:
       type: object
       properties:
-        ownerId:
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiOwner'
+    ApiOwner:
+      type: object
+      properties:
+        id:
           type: integer
           format: int64
-        model:
+          example: 10
+        name:
           type: string
-          example: 'Hyundai'
-        location:
+          example: 'Abdullah'
+        email:
           type: string
-          example: 'Leuven'
-        price:
-          type: integer
-          example: 100
-
-    ApiCars:
-      type: array
-      items:
-        $ref: '#/components/schemas/ApiCar'
-
+          example: 'example@example.com'
+    OwnerCreatedEvent:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/ApiOwner'
     ApiError:
       type: object
       properties:
@@ -120,4 +94,4 @@ components:
           example: '2300'
         message:
           type: string
-          description: 'Brief explanation about the error, for more information consult the Car Service team'
+          description: 'Brief explanation about the error'

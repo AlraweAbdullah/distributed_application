@@ -117,7 +117,11 @@ paths:
               $ref: '#/components/schemas/ApiCar'
       responses:
         '200':
-          description: Car successfully removed
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
         '500':
           description: Internal Error
           content:
@@ -226,7 +230,11 @@ paths:
             format: int64
       responses:
         '200':
-          description: Car successfully removed
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCar'
         '500':
           description: Internal Error
           content:

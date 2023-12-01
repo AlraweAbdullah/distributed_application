@@ -61,9 +61,12 @@ paths:
 components:
   schemas:
     ApiUsers:
-      type: array
-      items:
-        $ref: '#/components/schemas/ApiUser'
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiUser'
     ApiUser:
       type: object
       properties:
@@ -92,3 +95,24 @@ components:
         message:
           type: string
           description: 'Brief explanation about the error, for more information consult the User Service team'
+
+    ValidateUserCommand:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+          format: int64
+        userEmail:
+          type: string
+
+    UserValidatedEvent:
+      type: object
+      properties:
+        reservationId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        isClient:
+          type: boolean
